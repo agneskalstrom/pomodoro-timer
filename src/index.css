@@ -10,7 +10,7 @@ body {
   background-image: url(./assets/tomato.svg);
   background-repeat: no-repeat;
   background-position: bottom;
-  background-size: 600px;
+  background-size: 500px;
   margin: 0;
   padding: 0;
 }
@@ -24,10 +24,10 @@ main {
 }
 
 .session {
-    font-weight: normal;
-    margin: 0;
-    text-transform: uppercase;
-    font-size: 18px;
+  font-weight: normal;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 18px;
 }
 
 .timer-box {
@@ -65,4 +65,5 @@ button:hover {
   background-color: var(--primary-color);
   color: var(--secondary-color);
   padding: 10px 24px 10px;
+  cursor: pointer;
 }

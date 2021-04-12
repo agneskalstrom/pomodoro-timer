@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import alarmSound from "../assets/alarm.mp3";
-import clickSound from "../assets/click.mp3"
+import clickSound from "../assets/click.mp3";
 
 const alarm = new Audio(alarmSound);
 const click = new Audio(clickSound);
@@ -11,6 +11,18 @@ const Timer = () => {
   const [isActive, setIsActive] = useState(false);
   const [label, setLabel] = useState("Focus time");
   const [session, setSession] = useState("focus");
+
+  function formatTime() {
+    let min = minutes;
+    let sec = seconds;
+    if (sec < 10) {
+      sec = `0${seconds}`;
+    }
+    if (min < 10) {
+      min = `0${minutes}`;
+    }
+    return `${min}:${sec}`;
+  }
 
   useEffect(() => {
     let interval = null;
@@ -41,7 +53,6 @@ const Timer = () => {
     return () => clearInterval(interval);
   }, [isActive, minutes, seconds, label, session]);
 
-
   function toggle() {
     click.play();
     setIsActive(!isActive);
@@ -52,9 +63,7 @@ const Timer = () => {
       <h1 className="session">{label}</h1>
       <div className="divider"></div>
       <div className="timer">
-        <span className="countdown">
-          {minutes}:{seconds}
-        </span>
+        <span className="countdown">{formatTime()}</span>
       </div>
       <button onClick={toggle}>{isActive ? "Pause" : "Start"}</button>
     </section>
