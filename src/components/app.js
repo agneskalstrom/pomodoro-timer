@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import alarmSound from "../assets/alarm.mp3";
 import clickSound from "../assets/click.mp3";
+import tomatoDark from "../assets/tomato-dark.svg";
+import tomatoLight from "../assets/tomato-light.svg";
+import Info from "./info";
 
-const alarm = new Audio(alarmSound);
-const click = new Audio(clickSound);
-
-const Timer = () => {
+const App = () => {
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [label, setLabel] = useState("Focus time");
   const [session, setSession] = useState("focus");
+  const [label, setLabel] = useState("Focus time");
+  const [displayInfo, setDisplayInfo] = useState(false);
 
   function formatTime() {
     let min = minutes;
@@ -35,6 +36,7 @@ const Timer = () => {
         setSeconds(59);
       }
       if (isActive && minutes === 0 && seconds < 0) {
+        const alarm = new Audio(alarmSound);
         alarm.play();
         setIsActive(false);
         if (session === "focus") {
@@ -51,23 +53,43 @@ const Timer = () => {
       }
     }
     return () => clearInterval(interval);
-  }, [isActive, minutes, seconds, label, session]);
+  }, [isActive, minutes, seconds, session]);
 
   function toggle() {
+    const click = new Audio(clickSound);
     click.play();
     setIsActive(!isActive);
   }
 
+  function toggleInfo() {
+    setDisplayInfo(!displayInfo);
+  }
+
   return (
-    <section className="timer-box">
-      <h1 className="session">{label}</h1>
-      <div className="divider"></div>
-      <div className="timer">
-        <span className="countdown">{formatTime()}</span>
+    <main className={session === "focus" ? "focus-mode" : "break-mode"}>
+      <div className="toggle">
+        <button className="toggle-button" onClick={toggleInfo}>
+          {displayInfo ? "X" : "?"}
+        </button>
       </div>
-      <button onClick={toggle}>{isActive ? "Pause" : "Start"}</button>
-    </section>
+      <div className="app-wrapper">
+        <div className="timer-box">
+          <h1>{label}</h1>
+          <div className="divider"></div>
+          <div className="timer">
+            <span className="countdown">{formatTime()}</span>
+          </div>
+          <button onClick={toggle} className="timer-button">
+            {isActive ? "Pause" : "Start"}
+          </button>
+        </div>
+        {displayInfo ? <Info /> : ""}
+      </div>
+      <div className="img-container">
+        <img src={session === "focus" ? tomatoDark : tomatoLight} className="tomato" alt="Drawing of a tomato" />
+      </div>
+    </main>
   );
 };
 
-export default Timer;
+export default App;

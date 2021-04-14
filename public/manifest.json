@@ -6,7 +6,12 @@
   "background_color": "#ebebeb",
   "theme_color": "#222222",
   "orientation": "portrait-primary",
+  "prefer_related_applications": "false",
   "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon", "sizes": "32x32"
+    },
     {
       "src": "./icons/icon-72x72.png",
       "type": "image/png", "sizes": "72x72"
