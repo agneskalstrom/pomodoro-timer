@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
+import Button from "./button";
+import Heading from "./heading";
+import Chevron from "./chevron";
 import alarmSound from "../assets/alarm.mp3";
 import clickSound from "../assets/click.mp3";
 import tomatoDark from "../assets/tomato-dark.svg";
 import tomatoLight from "../assets/tomato-light.svg";
-import Info from "./info";
 
 const App = () => {
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [session, setSession] = useState("focus");
-  const [label, setLabel] = useState("Focus time");
-  const [displayInfo, setDisplayInfo] = useState(false);
 
   function formatTime() {
     let min = minutes;
@@ -30,7 +30,7 @@ const App = () => {
     if (isActive) {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
-      }, 1000);
+      }, 10);
       if (seconds < 0) {
         setMinutes((minutes) => minutes - 1);
         setSeconds(59);
@@ -43,50 +43,52 @@ const App = () => {
           setSession("break");
           setMinutes(5);
           setSeconds(0);
-          setLabel("Break time");
         } else {
           setSession("focus");
           setMinutes(25);
           setSeconds(0);
-          setLabel("Focus time");
         }
       }
     }
     return () => clearInterval(interval);
   }, [isActive, minutes, seconds, session]);
 
+  const click = new Audio(clickSound);
+
   function toggle() {
-    const click = new Audio(clickSound);
     click.play();
     setIsActive(!isActive);
   }
 
-  function toggleInfo() {
-    setDisplayInfo(!displayInfo);
+  function increase() {
+    click.play();
+    setMinutes(minutes + 1);
+  }
+
+  function decrease() {
+    click.play();
+    setMinutes(minutes - 1);
   }
 
   return (
     <main className={session === "focus" ? "focus-mode" : "break-mode"}>
-      <div className="toggle">
-        <button className="toggle-button" onClick={toggleInfo}>
-          {displayInfo ? "X" : "?"}
-        </button>
-      </div>
       <div className="app-wrapper">
         <div className="timer-box">
-          <h1>{label}</h1>
-          <div className="divider"></div>
+          <Heading label={session === "focus" ? "Focus mode" : "Break mode"} />
           <div className="timer">
+            <Chevron event={increase} buttonText="▲"/>
             <span className="countdown">{formatTime()}</span>
+            <Chevron event={decrease} buttonText="▼" />
           </div>
-          <button onClick={toggle} className="timer-button">
-            {isActive ? "Pause" : "Start"}
-          </button>
+          <Button event={toggle} buttonText={isActive ? "Pause" : "Start"} />
         </div>
-        {displayInfo ? <Info /> : ""}
-      </div>
-      <div className="img-container">
-        <img src={session === "focus" ? tomatoDark : tomatoLight} className="tomato" alt="Drawing of a tomato" />
+        <div className="img-container">
+          <img
+            src={session === "focus" ? tomatoDark : tomatoLight}
+            className="tomato"
+            alt="Drawing of a tomato"
+          />
+        </div>
       </div>
     </main>
   );
