@@ -51,9 +51,9 @@ const App = () => {
   function changeTime(event) {
     tick.play();
     const name = event.target.name;
-    if (name === "increment" && minutes <= 59) {
+    if (name === "increment") {
       setMinutes(minutes + 1);
-    } else if (name === "decrement" && minutes > 0) {
+    } else if (name === "decrement") {
       setMinutes(minutes - 1);
     }
   }
