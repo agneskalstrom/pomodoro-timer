@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { formatTime } from "../utils";
 import Button from "./button";
 import Heading from "./heading";
 import Chevron from "./chevron";
@@ -6,24 +7,14 @@ import alarmSound from "../assets/alarm.mp3";
 import clickSound from "../assets/click.mp3";
 import tomatoDark from "../assets/tomato-dark.svg";
 import tomatoLight from "../assets/tomato-light.svg";
+const tick = new Audio(clickSound);
+const alarm = new Audio(alarmSound);
 
 const App = () => {
   const [minutes, setMinutes] = useState(25);
   const [seconds, setSeconds] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [session, setSession] = useState("focus");
-
-  function formatTime() {
-    let min = minutes;
-    let sec = seconds;
-    if (sec < 10) {
-      sec = `0${seconds}`;
-    }
-    if (min < 10) {
-      min = `0${minutes}`;
-    }
-    return `${min}:${sec}`;
-  }
 
   useEffect(() => {
     let interval = null;
@@ -36,7 +27,6 @@ const App = () => {
         setSeconds(59);
       }
       if (isActive && minutes === 0 && seconds < 0) {
-        const alarm = new Audio(alarmSound);
         alarm.play();
         setIsActive(false);
         if (session === "focus") {
@@ -53,21 +43,19 @@ const App = () => {
     return () => clearInterval(interval);
   }, [isActive, minutes, seconds, session]);
 
-  const click = new Audio(clickSound);
-
   function toggle() {
-    click.play();
+    tick.play();
     setIsActive(!isActive);
   }
 
-  function increase() {
-    click.play();
-    setMinutes(minutes + 1);
-  }
-
-  function decrease() {
-    click.play();
-    setMinutes(minutes - 1);
+  function changeTime(event) {
+    tick.play();
+    const name = event.target.name;
+    if (name === "increment" && minutes <= 59) {
+      setMinutes(minutes + 1);
+    } else if (name === "decrement" && minutes > 0) {
+      setMinutes(minutes - 1);
+    }
   }
 
   return (
@@ -76,9 +64,31 @@ const App = () => {
         <div className="timer-box">
           <Heading label={session === "focus" ? "Focus mode" : "Break mode"} />
           <div className="timer">
-            <Chevron event={increase} buttonText="▲"/>
-            <span className="countdown">{formatTime()}</span>
-            <Chevron event={decrease} buttonText="▼" />
+            <div className="chevron-wrapper">
+              {isActive || (minutes === 60) ? (
+                null
+              ) : (
+                <Chevron
+                  name="increment"
+                  event={changeTime}
+                  buttonText="▲"
+                  aria-label="Increase minute count"
+                />
+              )}
+            </div>
+            <span className="countdown">{formatTime(minutes, seconds)}</span>
+            <div className="chevron-wrapper">
+              {isActive || (minutes === 0 && seconds === 0) ? (
+                null
+              ) : (
+                <Chevron
+                  name="decrement"
+                  event={changeTime}
+                  buttonText="▼"
+                  aria-label="Decrease minute count"
+                />
+              )}
+            </div>
           </div>
           <Button event={toggle} buttonText={isActive ? "Pause" : "Start"} />
         </div>

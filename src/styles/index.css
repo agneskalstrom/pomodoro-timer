@@ -69,6 +69,12 @@ h1 {
   padding-bottom: 16px;
 }
 
+.chevron-wrapper {
+  height: 25px;
+  display: flex;
+  justify-content: center;
+}
+
 .chevron {
   color: var(--secondary-color);
   border: 0;
