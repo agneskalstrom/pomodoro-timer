@@ -7,6 +7,8 @@ import alarmSound from "../assets/alarm.mp3";
 import clickSound from "../assets/click.mp3";
 import tomatoDark from "../assets/tomato-dark.svg";
 import tomatoLight from "../assets/tomato-light.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 const tick = new Audio(clickSound);
 const alarm = new Audio(alarmSound);
 
@@ -65,26 +67,22 @@ const App = () => {
           <Heading label={session === "focus" ? "Focus mode" : "Break mode"} />
           <div className="timer">
             <div className="chevron-wrapper">
-              {isActive || (minutes === 60) ? (
-                null
-              ) : (
+              {isActive || minutes === 60 ? null : (
                 <Chevron
                   name="increment"
                   event={changeTime}
-                  buttonText="▲"
+                  buttonText={<FontAwesomeIcon icon={faChevronUp} />}
                   aria-label="Increase minute count"
                 />
               )}
             </div>
             <span className="countdown">{formatTime(minutes, seconds)}</span>
             <div className="chevron-wrapper">
-              {isActive || (minutes === 0 && seconds === 0) ? (
-                null
-              ) : (
+              {isActive || (minutes === 0 && seconds === 0) ? null : (
                 <Chevron
                   name="decrement"
                   event={changeTime}
-                  buttonText="▼"
+                  buttonText={<FontAwesomeIcon icon={faChevronDown} />}
                   aria-label="Decrease minute count"
                 />
               )}
