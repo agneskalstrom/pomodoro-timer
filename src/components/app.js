@@ -23,7 +23,7 @@ const App = () => {
     if (isActive) {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
-      }, 10);
+      }, 1000);
       if (seconds < 0) {
         setMinutes((minutes) => minutes - 1);
         setSeconds(59);
@@ -72,7 +72,7 @@ const App = () => {
                   name="increment"
                   event={changeTime}
                   buttonText={<FontAwesomeIcon icon={faChevronUp} />}
-                  aria-label="Increase minute count"
+                  arialabel="Increase minute count"
                 />
               )}
             </div>
@@ -83,7 +83,7 @@ const App = () => {
                   name="decrement"
                   event={changeTime}
                   buttonText={<FontAwesomeIcon icon={faChevronDown} />}
-                  aria-label="Decrease minute count"
+                  arialabel="Decrease minute count"
                 />
               )}
             </div>
