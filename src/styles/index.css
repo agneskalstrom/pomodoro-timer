@@ -87,7 +87,7 @@ h1 {
   background-color: transparent;
 }
 
-.chevron-hover {
+.chevron:hover {
   cursor: pointer;
 }
 
@@ -106,11 +106,11 @@ h1 {
   transition: 0.2s;
   font-size: 18px;
   z-index: 20;
+  cursor: pointer;
 }
 
 .timer-button:active {
   opacity: .8;
-  cursor: pointer;
 }
 
 .app-wrapper {
